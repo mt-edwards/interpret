@@ -1,0 +1,314 @@
+Interpretation of Machine Learning Models
+========================================================
+author: Matthew Edwards
+date: 21st January 2020
+
+<small> 
+Data Scientist   
+National Innovation Centre for Data   
+</small>
+
+```{r setup, include=FALSE}
+opts_chunk$set(cache=TRUE)
+
+library(xrayspecs)
+library(tidyverse)
+library(tidymodels)
+library(ranger)
+library(knitr)
+library(kableExtra)
+```
+
+Bike Data Set
+========================================================
+
+This bike data set contains daily counts of rented bicycles.
+
+```{r}
+data("bike")
+```
+
+The bike data set consists of `r nrow(bike)` observations (days) and `r ncol(bike)` variables. The aim is to predict the **target** variable bikes_rented from the quantitative (e.g. temperature, humitidy and wind_speed) and qualitative (e.g. season) **feature** variables.
+
+```{r echo=FALSE}
+bike %>% 
+  head(4) %>% 
+  kable() %>% 
+  kable_styling(font_size = 10) %>% 
+  column_spec(11, color = "white", background = "grey")
+```
+
+Training and Test Split
+========================================================
+
+The bike data set set is split into a training set and a test set with the **rsample** package. The trainiing set is used to train the machine learning (ML) model and the test set is used to test and interpret the ML model.
+
+```{r}
+split <- initial_split(bike, prop = 0.8)
+bike_train <- training(split)
+bike_test <- testing(split)
+```
+
+The training set contains `r nrow(bike_train)` observations and the test set contains `r nrow(bike_test)` observations.
+
+Random Forest Model
+========================================================
+
+A **random forest** model is trained on the training set using the **parsnip** package. The parsnip package provides a unified framework for fitting ML models in R.
+
+```{r}
+rf <- rand_forest(mode = "regression") %>%
+  set_engine("ranger") %>%
+  fit(bikes_rented ~ ., data = bike_train)
+```
+
+Testing Model
+========================================================
+
+The targets from the test set are compared to the predictions from the random forest model using the **yardstick** package. 
+
+```{r}
+predict(rf, bike_test) %>%
+  bind_cols(bike_test) %>%
+  mae(truth = bikes_rented, estimate = .pred)
+```
+
+Interpretation
+========================================================
+
+**Interpretation** involves understanding how the ML model obtained the predicted targets from the features:
+
+- Which features are the most important for predictive performance?
+- How do changes in the features effect changes in the predicted targets?
+
+The ML model is interpreted **NOT** the true feature-target relationship.
+
+Interpretation
+========================================================
+
+Since ML models are **functions** that map features to targets, interpretation can be framed as understanding functions. Linear functions require a couple of numbers to describe (i.e. intercept, slope). Linear regression models are termed as interpretable (white box) models.
+
+***
+
+```{r echo=FALSE}
+xs = seq(1, 10, by = 0.01)
+qplot(xs, 2 + 3 * xs, geom = "line", xlab = "Feature", ylab = "Target", main = "Linear Model", ylim = c(0, 40))
+```
+
+Interpretation
+========================================================
+
+Complex functions require more numbers to describe. Possibly one number for every input value! **Plots** display one number for every input value, however, they are limited to functions with one or two inputs. Complex models are termed as uninterpretable (black box) models.
+
+***
+
+```{r echo=FALSE}
+qplot(xs, 20 + 10 * sin(xs) - 8 * cos(2 * xs - 5), geom = "line", xlab = "Feature", ylab = "Target", main = "Complex Model", ylim = c(0, 40))
+```
+
+Interpretation
+========================================================
+
+Assume that there is a complex true feature-target relationship. 
+
+**Complex ML Model**
+
+- Good predictive performance
+- Approximate interpretations
+ 
+**Linear ML Model**
+
+- Bad predictive performance
+- Perfect interpretations
+
+Approximate interpretations must be approached with causion.
+
+Interpretation
+========================================================
+
+So what approximate interpretation methods are there available for complex ML models?
+
+**Model-Agnostic Methods**
+
+1. Permutation importance plots
+2. Partial dependence plots
+3. Individual conditional expectation plots
+
+Permutation Importance Plots
+========================================================
+
+Permutation importance plots are a way of answering the question: which features are the most important for predictive importance?
+
+**Method**
+
+1. Select a feature
+2. Permute the values of that feature in the test set
+3. Test the model on that permuted test set
+4. Calculate the change in predictive performance
+
+Permutation Importance Plot
+========================================================
+
+```{r out.width='40%'}
+rf %>%
+  plot_importance(bike_test, bikes_rented, mae) +
+  labs(title = "Permutation Importance Plot")
+```
+
+Permutation Importance Plot
+========================================================
+
+**Advantages**
+
+- Cross-model comparible
+- Accounts for feature interactions
+- Does not require re-training
+
+***
+
+**Disadvantages**
+
+- Potentially computational expensive (CI)
+- Sensitive to unreliable observations
+
+Partial Dependence Plot
+========================================================
+
+Partial dependence plots are a way of answering the question: how do changes in the features effect changes in the predicted targets?
+
+**Method**
+
+1. Select a feature
+2. Select a value $x$ for that feature
+3. Replace the values of that feature in the test set with $x$
+4. Predict targets $\hat{y}_1,\dots,\hat{y}_n$
+5. Average predicted targets $\bar{y}$
+6. Plot ($x,\bar{y}$) for a range of $x$
+
+Partial Dependence Plot (qualitative)
+========================================================
+
+```{r eval=FALSE}
+rf %>%
+  plot_dependence(bike_test, temperature) +
+  labs(title = "Partial Dependence Plot") +
+  labs(x = "Temperature")
+```
+
+```{r echo=FALSE, fig.show='hold', out.width='33%'}
+rf %>%
+  plot_dependence(bike_test, temperature) +
+  labs(title = "Partial Dependence Plot") +
+  labs(x = "Temperature")
+
+rf %>%
+  plot_dependence(bike_test, humidity) +
+  labs(title = "Partial Dependence Plot") +
+  labs(x = "Humidity")
+
+rf %>%
+  plot_dependence(bike_test, wind_speed) +
+  labs(title = "Partial Dependence Plot") +
+  labs(x = "Wind Speed")
+```
+
+Partial Dependence Plot (quantitative)
+========================================================
+
+```{r out.width='40%'}
+rf %>%
+  plot_dependence(bike_test, season) +
+  labs(title = "Partial Dependence Plot") +
+  labs(x = "Season")
+```
+
+Partial Dependence Plot
+========================================================
+
+**Advantages**
+
+- Very intuitive
+- Feature distribution inticates reliability
+
+***
+
+**Disadvantages**
+
+- Maximum of two features
+- Assumption of independence
+- Some heterogeneous effects are hidden
+
+Individual Conditional Expectation Plot
+========================================================
+
+Individual conditional expectation plots are also a way of answer the question: how do changes in the features efefct changes in the predicted targets?
+
+**Method**
+
+1. Select a feature
+2. Select a value $x$ for that feature
+3. Replace the values of that feature in the test set with $x$
+4. Predict targets $\hat{y}_1,\dots,\hat{y}_n$
+5. Plot $(x,\hat{y}_1),\dots,(x,\hat{y}_n)$ for a range of $x$
+
+Individual Conditional Expectation Plot
+========================================================
+
+```{r eval=FALSE, fig.show='hold', out.width='33%'}
+rf %>%
+  plot_dependence(bike_test, days_since_2011,
+    examples = TRUE,
+    center = TRUE
+  ) +
+  labs(title = "Partial Dependence Plot") +
+  labs("Days Since 2011")
+```
+
+```{r echo=FALSE, fig.show='hold', out.width='33%'}
+rf %>%
+  plot_dependence(bike_test, days_since_2011) +
+  labs(title = "Partial Dependence Plot") +
+  labs("Days Since 2011")
+
+rf %>%
+  plot_dependence(bike_test, days_since_2011, examples = TRUE) +
+  labs(title = "Individual Conditional Expectation Plot") +
+  labs(x = "Days Since 2011")
+
+rf %>%
+  plot_dependence(bike_test, days_since_2011, examples = TRUE, center = TRUE) +
+  labs(title = "Centered Individual Conditional Expectation Plot") +
+  labs(x = "Days Since 2011")
+```
+
+Individual Conditional Expectation Plot
+========================================================
+
+**Advantages**
+
+- Very intuitive
+- Feature distribution inticates reliability
+- No assumption of independence
+- Some heterogeneous effects are revealed
+- Can include partial independence plot
+
+***
+
+**Disadvantages**
+
+- Maximum of one feature
+
+Conclusion
+========================================================
+
+- Interpretation involves understanding ML models
+- Complex ML models can only be interpreted approximately
+- Model-Agnostic methods provide approximate interpretations
+- Approximate interpretations must be approached with causion
+- Interpretations are of the ML models not the true feature-target relationship
+
+<small>
+**Interpretable Machine Learning**   
+A Guide for Making Black Box Models Explainable.   
+Christoph Molnar   
+</small>
