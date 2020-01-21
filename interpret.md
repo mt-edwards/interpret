@@ -350,7 +350,9 @@ Conclusion
 - Model-agnostic methods provide these interpretations
 - Interpretations are not of the true feature-target relationship
 
-**https://mt-edwards.github.io/interpret**
+**Presentation:** https://mt-edwards.github.io/interpret
+
+**Package:** https://github.com/mt-edwards/xrayspecs
 
 <small>
 **Interpretable Machine Learning**   
