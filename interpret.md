@@ -237,8 +237,8 @@ Permutation Importance Plot
 
 **Disadvantages**
 
+- Sensitive to the permutation
 - Potentially computational expensive (CI)
-- Sensitive to unreliable observations
 
 Partial Dependence Plot
 ========================================================
@@ -347,9 +347,10 @@ Conclusion
 
 - Interpretation involves understanding ML models
 - Complex ML models can only be interpreted approximately
-- Model-Agnostic methods provide approximate interpretations
-- Approximate interpretations must be approached with causion
-- Interpretations are of the ML models not the true feature-target relationship
+- Model-agnostic methods provide these interpretations
+- Interpretations are not of the true feature-target relationship
+
+**https://mt-edwards.github.io/interpret**
 
 <small>
 **Interpretable Machine Learning**   
