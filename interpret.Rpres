@@ -121,7 +121,7 @@ Assume that there is a complex true feature-target relationship.
 - Bad predictive performance
 - Perfect interpretations
 
-Approximate interpretations must be approached with causion.
+Approximate interpretations must be approached with caution.
 
 Interpretation
 ========================================================
@@ -241,7 +241,7 @@ Partial Dependence Plot
 Individual Conditional Expectation Plot
 ========================================================
 
-Individual conditional expectation plots are also a way of answer the question: how do changes in the features efefct changes in the predicted targets?
+Individual conditional expectation plots are also a way of answer the question: how do changes in the features effect changes in the predicted targets?
 
 **Method**
 
