@@ -898,7 +898,7 @@ National Innovation Centre for Data<br/>
 <section data-transition="linear" data-transition-speed="default">
 <h3>Training and Test Split</h3>
 <div class="slideContent" >
-<p>The bike data set set is split into a training set and a test set with the <strong>rsample</strong> package. The trainiing set is used to train the machine learning (ML) model and the test set is used to test and interpret the ML model.</p>
+<p>The bike data set set is split into a training set and a test set with the <strong>rsample</strong> package. The training set is used to train the machine learning (ML) model and the test set is used to test and interpret the ML model.</p>
 
 <pre><code class="r">split &lt;- initial_split(bike, prop = 0.8)
 bike_train &lt;- training(split)
@@ -960,7 +960,7 @@ bike_test &lt;- testing(split)
 <section data-transition="linear" data-transition-speed="default">
 <h3>Interpretation</h3>
 <div class="column column1 slideContent" >
-<p>Since ML models are <strong>functions</strong> that map features to targets, interpretation can be framed as understanding functions. Linear functions require a couple of numbers to describe (i.e. intercept, slope). Linear regression models are termed as interpretable (white box) models.</p>
+<p>Since ML models are <strong>functions</strong> that map features to targets, interpretation can be framed as understanding functions. Linear functions require a couple of numbers to describe (i.e. intercept, slope). Linear regression models are termed interpretable (white box) models.</p>
 
 
 </div>
@@ -976,7 +976,7 @@ bike_test &lt;- testing(split)
 <section data-transition="linear" data-transition-speed="default">
 <h3>Interpretation</h3>
 <div class="column column1 slideContent" >
-<p>Complex functions require more numbers to describe. Possibly one number for every input value! <strong>Plots</strong> display one number for every input value, however, they are limited to functions with one or two inputs. Complex models are termed as uninterpretable (black box) models.</p>
+<p>Complex functions require more numbers to describe. Possibly one number for every input value! <strong>Plots</strong> display one number for every input value, however, they are limited to functions with one or two inputs. Complex models are termed uninterpretable (black box) models.</p>
 
 
 </div>
@@ -1065,7 +1065,7 @@ bike_test &lt;- testing(split)
 <p><strong>Advantages</strong></p>
 
 <ul>
-<li>Cross-model comparible</li>
+<li>Cross-model comparable</li>
 <li>Accounts for feature interactions</li>
 <li>Does not require re-training</li>
 </ul>
@@ -1080,7 +1080,7 @@ bike_test &lt;- testing(split)
 
 <ul>
 <li>Sensitive to the permutation</li>
-<li>Potentially computational expensive (CI)</li>
+<li>Computational expensive</li>
 </ul>
 
 </div>
@@ -1140,7 +1140,7 @@ bike_test &lt;- testing(split)
 
 <ul>
 <li>Very intuitive</li>
-<li>Feature distribution inticates reliability</li>
+<li>Rug plot inticates reliability</li>
 </ul>
 
 
@@ -1202,10 +1202,10 @@ bike_test &lt;- testing(split)
 
 <ul>
 <li>Very intuitive</li>
-<li>Feature distribution inticates reliability</li>
+<li>Rug plot inticates reliability</li>
 <li>No assumption of independence</li>
 <li>Some heterogeneous effects are revealed</li>
-<li>Can include partial independence plot</li>
+<li>Include partial independence plot</li>
 </ul>
 
 

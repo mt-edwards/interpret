@@ -102,7 +102,7 @@ The bike data set consists of 731 observations (days) and 12 variables. The aim 
 Training and Test Split
 ========================================================
 
-The bike data set set is split into a training set and a test set with the **rsample** package. The trainiing set is used to train the machine learning (ML) model and the test set is used to test and interpret the ML model.
+The bike data set set is split into a training set and a test set with the **rsample** package. The training set is used to train the machine learning (ML) model and the test set is used to test and interpret the ML model.
 
 
 ```r
@@ -157,7 +157,7 @@ The ML model is interpreted **NOT** the true feature-target relationship.
 Interpretation
 ========================================================
 
-Since ML models are **functions** that map features to targets, interpretation can be framed as understanding functions. Linear functions require a couple of numbers to describe (i.e. intercept, slope). Linear regression models are termed as interpretable (white box) models.
+Since ML models are **functions** that map features to targets, interpretation can be framed as understanding functions. Linear functions require a couple of numbers to describe (i.e. intercept, slope). Linear regression models are termed interpretable (white box) models.
 
 ***
 
@@ -166,7 +166,7 @@ Since ML models are **functions** that map features to targets, interpretation c
 Interpretation
 ========================================================
 
-Complex functions require more numbers to describe. Possibly one number for every input value! **Plots** display one number for every input value, however, they are limited to functions with one or two inputs. Complex models are termed as uninterpretable (black box) models.
+Complex functions require more numbers to describe. Possibly one number for every input value! **Plots** display one number for every input value, however, they are limited to functions with one or two inputs. Complex models are termed uninterpretable (black box) models.
 
 ***
 
@@ -229,7 +229,7 @@ Permutation Importance Plot
 
 **Advantages**
 
-- Cross-model comparible
+- Cross-model comparable
 - Accounts for feature interactions
 - Does not require re-training
 
@@ -238,7 +238,7 @@ Permutation Importance Plot
 **Disadvantages**
 
 - Sensitive to the permutation
-- Potentially computational expensive (CI)
+- Computational expensive
 
 Partial Dependence Plot
 ========================================================
@@ -286,7 +286,7 @@ Partial Dependence Plot
 **Advantages**
 
 - Very intuitive
-- Feature distribution inticates reliability
+- Rug plot inticates reliability
 
 ***
 
@@ -331,10 +331,10 @@ Individual Conditional Expectation Plot
 **Advantages**
 
 - Very intuitive
-- Feature distribution inticates reliability
+- Rug plot inticates reliability
 - No assumption of independence
 - Some heterogeneous effects are revealed
-- Can include partial independence plot
+- Include partial independence plot
 
 ***
 
